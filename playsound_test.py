@@ -2,6 +2,6 @@ import os
 from playsound import playsound
 
 
-a= os.path.dirname(__file__)+'\\min.mp3'
 
+#不用os 当前文件夹是有用的
 playsound("min.mp3")

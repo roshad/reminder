@@ -7,7 +7,8 @@ import os
 
 startTime=None
 # 10min响一次,开terminal重置,偶发无意识地重置
-
+a= os.path.dirname(__file__)+'\\min.mp3'
+playsound(a)
 while True:
     try:
         #print(gw.getActiveWindowTitle())
@@ -21,7 +22,7 @@ while True:
                 print("开始计时",startTime)
             if ((datetime.datetime.now()-startTime).seconds>=600):#到10分钟,放声音,激活
                 print("时间到",datetime.datetime.now().strftime('%H:%M:%S'))
-                playsound("min.mp3")
+                playsound(a)
                 #不能时间到就激活,否则无意中点旁边
         
     except Exception as e: 
