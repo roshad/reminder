@@ -1,2 +1,1 @@
-if ((test:=1)>0):
-    print(test)
+print(15 if  1==1 else 5)
