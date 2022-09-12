@@ -2,17 +2,18 @@
 import time
 import datetime
 import pygetwindow as gw
-import tkinter as tk
-from win10toast import ToastNotifier
-# toast = ToastNotifier()
 
+
+import keyboard
+# toast = ToastNotifier()
+import tkinter as tk
 gui = tk.Tk()
-c10v = tk.IntVar()
-doubleV = tk.IntVar()
-c10 = tk.Checkbutton(gui, text="10min",	variable=c10v)
-double = tk.Checkbutton(gui, text="加长", variable=doubleV)
-c10.pack()
-double.pack()
+tkHour = tk.IntVar()
+# doubleV = tk.IntVar()
+hourButton = tk.Checkbutton(gui, text="60min",	variable=tkHour)
+# double = tk.Checkbutton(gui, text="加长", variable=doubleV)
+hourButton.pack()
+# double.pack()
 
 
 def now(): return datetime.datetime.now()
@@ -22,37 +23,48 @@ lastTime = now()
 def diff(): return now()-lastTime
 
 
-def forwardWindow():
-    time.sleep(0.1)
-    try:
-        if ("OneNote" not in gw.getActiveWindow().title):
-            for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
-                # if onenote not in title
+def pinWindow():
+    string = ""
+    while True:
 
-                window.minimize()
-                window.maximize()
-    except:
-        1
+        time.sleep(1)
+
+        if keyboard.is_pressed("esc"):
+            string += 'h'
+        #print(string)
+        try:
+            if (len(string) < 2 and ("OneNote" not in gw.getActiveWindow().title)):
+                for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
+                    # if onenote not in title
+                    window.minimize()
+                    window.maximize()
+            elif (len(string) >= 2):
+                for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
+                    # if onenote not in title
+                    window.minimize()
+                return
+
+        except:
+            print("error")
 
 
 def loop():
     global lastTime
+
     # 小时不一样,停10秒
 
     if (lastTime.hour != now().hour):
 
         print(now(), "提醒", "整点")
-        while (diff().seconds < (15 if doubleV.get() == 1 else 5)):
-            forwardWindow()
+        pinWindow()
     # 10分钟,停5秒
-
-    if (now().minute % 10 == 0 and now().second == 0 and c10v.get() == 1):
+    #
+    if (now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0):
 
         print(now(), "提醒", "10分钟")
-        while (diff().seconds < (15 if doubleV.get() == 1 else 5)):
-            forwardWindow()
-
+        pinWindow()
     lastTime = now()
+    time.sleep(0.1)
     gui.after(500, loop)
 
 

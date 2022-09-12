@@ -1,1 +1,10 @@
-print(15 if  1==1 else 5)
+import keyboard
+import time
+string = ''
+while True:
+    if keyboard.is_pressed("esc"):
+        string += 'h'
+   
+    time.sleep(1)
+    if string=="hhh":
+        break
