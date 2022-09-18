@@ -9,10 +9,13 @@ import keyboard
 import tkinter as tk
 gui = tk.Tk()
 tkHour = tk.IntVar()
+tkLong = tk.IntVar()
 # doubleV = tk.IntVar()
 hourButton = tk.Checkbutton(gui, text="60min",	variable=tkHour)
+longButton = tk.Checkbutton(gui, text="加长",	variable=tkLong)
 # double = tk.Checkbutton(gui, text="加长", variable=doubleV)
 hourButton.pack()
+longButton.pack()
 # double.pack()
 
 
@@ -25,6 +28,7 @@ def diff(): return now()-lastTime
 
 def pinWindow():
     string = ""
+    length = 5 if tkLong.get() else 2
     while True:
 
         time.sleep(1)
@@ -33,12 +37,12 @@ def pinWindow():
             string += 'h'
         #print(string)
         try:
-            if (len(string) < 2 and ("OneNote" not in gw.getActiveWindow().title)):
+            if (len(string) < length and ("OneNote" not in gw.getActiveWindow().title)):
                 for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
                     # if onenote not in title
                     window.minimize()
                     window.maximize()
-            elif (len(string) >= 2):
+            elif (len(string) >= length):
                 for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
                     # if onenote not in title
                     window.minimize()
@@ -50,17 +54,12 @@ def pinWindow():
 
 def loop():
     global lastTime
-
     # 小时不一样,停10秒
-
     if (lastTime.hour != now().hour):
-
         print(now(), "提醒", "整点")
         pinWindow()
     # 10分钟,停5秒
-    #
     if (now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0):
-
         print(now(), "提醒", "10分钟")
         pinWindow()
     lastTime = now()
