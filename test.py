@@ -1,8 +1,8 @@
-import keyboard
+import _keyboard
 import time
 string = ''
 while True:
-    if keyboard.is_pressed("esc"):
+    if _keyboard.is_pressed("esc"):
         string += 'h'
    
     time.sleep(1)

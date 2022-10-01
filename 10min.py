@@ -4,7 +4,7 @@ import datetime
 import pygetwindow as gw
 
 
-import keyboard
+import keyboard as kb
 # toast = ToastNotifier()
 import tkinter as tk
 gui = tk.Tk()
@@ -28,14 +28,14 @@ def diff(): return now()-lastTime
 
 def pinWindow():
     string = ""
-    length = 5 if tkLong.get() else 2
+    length = 8 if tkLong.get() else 2
     while True:
 
         time.sleep(1)
 
-        if keyboard.is_pressed("esc"):
+        if kb.is_pressed("esc"):
             string += 'h'
-        #print(string)
+        # print(string)
         try:
             if (len(string) < length and ("OneNote" not in gw.getActiveWindow().title)):
                 for window in gw.getWindowsWithTitle('OneNote'):  # 最小化会有两个窗口
@@ -53,15 +53,19 @@ def pinWindow():
 
 
 def loop():
-    global lastTime
+    global lastTime,tkLong,tkHour
+    
     # 小时不一样,停10秒
-    if (lastTime.hour != now().hour):
-        print(now(), "提醒", "整点")
+    isTen = now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0
+    isHour = lastTime.hour != now().hour
+    if now().hour == 0:
+        tkHour.set(0)
+        tkLong.set(1)
+    if (isTen or isHour):
+        
+        print(now(), "提醒","10min" if isTen else "1hour")
         pinWindow()
-    # 10分钟,停5秒
-    if (now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0):
-        print(now(), "提醒", "10分钟")
-        pinWindow()
+ 
     lastTime = now()
     time.sleep(0.1)
     gui.after(500, loop)
