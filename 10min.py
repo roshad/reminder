@@ -58,7 +58,7 @@ def loop():
     # 小时不一样,停10秒
     isTen = now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0
     isHour = lastTime.hour != now().hour
-    if now().hour == 0:
+    if now().hour <= 12:
         tkHour.set(0)
         tkLong.set(1)
     if (isTen or isHour):
