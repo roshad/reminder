@@ -1,10 +1,16 @@
-import _keyboard
-import time
-string = ''
-while True:
-    if _keyboard.is_pressed("esc"):
-        string += 'h'
-   
-    time.sleep(1)
-    if string=="hhh":
-        break
+import pygetwindow as gw
+
+for window in gw.getWindowsWithTitle('Toggl Track'):  # 最小化会有两个窗口
+            # if onenote not in title
+            #print(window.title)
+    if (window.isMinimized):
+        window.restore()
+    
+    window.activate() 
+for window in gw.getWindowsWithTitle('Toggl Track'):  # 最小化会有两个窗口
+            # if onenote not in title
+            #print(window.title)
+    if (window.isMinimized):
+        window.restore()
+    
+    window.activate() 
