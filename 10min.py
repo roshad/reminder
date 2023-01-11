@@ -3,15 +3,19 @@ import tkinter as tk
 import time
 import datetime
 import pygetwindow as gw
-from win10toast import ToastNotifier
-import win32gui
-import win32con
+import os
+from playsound import playsound
+# from win10toast import ToastNotifier
+# import win32gui
+# import win32con
 import keyboard as kb
 # toaster = ToastNotifier()
 # toaster.show_toast("Hello World!!!",
 #                    "Python is 10 seconds awsm!",
 #                    duration=10,
 #                    )
+sound= os.path.dirname(__file__)+'\\min.wav'
+
 gui = tk.Tk()
 tkHour = tk.IntVar()
 tkLong = tk.IntVar()
@@ -22,7 +26,7 @@ longButton = tk.Checkbutton(gui, text="加长",	variable=tkLong)
 # hourButton.pack()
 longButton.pack()
 # double.pack()
-
+# playsound("./min.wav")
 
 def now(): return datetime.datetime.now()
 
@@ -34,7 +38,7 @@ def diff(): return now()-lastTime
 
 def pinWindow():
     string = ""
-    length = 8 if tkLong.get() else 2
+    length = 4 if tkLong.get() else 2
     while True:
 
         time.sleep(1)
@@ -45,19 +49,20 @@ def pinWindow():
         try:
             if (len(string) < length and ("Toggl Track" not in gw.getActiveWindow().title)):
                 for window in gw.getWindowsWithTitle('Toggl Track'):  # 最小化会有两个窗口
-                    # if onenote not in title
+                   
                     window.minimize()
                     window.restore()
             elif (len(  string) >= length):
                 for window in gw.getWindowsWithTitle('Toggl Track'):  
-                    # if onenote not in title
+                   
                     window.minimize()
+                    window.restore()
                 return
 
         except:
             print("error")
 
-pinWindow()
+# pinWindow()
 print(now(), "启动")
 
 
@@ -65,15 +70,19 @@ def loop():
     global lastTime, tkLong, tkHour
     # per10sec = now().second % 10 == 0
     is5 =  now().minute % 5 == 0 and now().second == 0 and tkHour.get() == 0
-    isTen = now().minute % 10 == 0 and now().second == 0 and tkHour.get() == 0
+    is10 = now().minute % 10 == 0 and now().second == 0 
+    is30 = now().minute % 30 == 0 and now().second == 0
     isHour = lastTime.hour != now().hour  # 小时不一样
-    if now().hour < 12:  # 上午加强提醒
-        tkHour.set(0)
-        tkLong.set(1)
+    # if now().hour < 12:  # 上午加强提醒
+    #     tkHour.set(0)
+    #     tkLong.set(1)
+    if (is30):
+        print(now(), "响")
+        playsound(sound)
     if (is5 or isHour):
-        print(now(), "提醒", "10min" if isTen else "1hour")
+        print(now(), "提醒", "5min" if is5 else "1hour")
         pinWindow()
-        
+    
 
     lastTime = now()
     time.sleep(0.1)
