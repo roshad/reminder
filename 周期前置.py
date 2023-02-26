@@ -12,7 +12,7 @@ while True:
         #get current hour
         
        
-        if ((datetime.datetime.now()-startTime).seconds%300==0 ):#时间到           
+        if ((datetime.datetime.now()-startTime).seconds%300<2 ):#时间到           
             if ("Track" not in gw.getActiveWindowTitle()):
                 print("提醒",datetime.datetime.now().strftime('%H:%M:%S'))
                 # activate OneNote window
