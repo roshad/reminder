@@ -1,19 +1,24 @@
 import tkinter as tk
 import time
+import datetime
 from tkinter import simpledialog
 import pygetwindow as gw  
 # create the main window
 root = tk.Tk()
 
-# define a function that prompts the user for input
+# 检查是否有对应标题的窗口，有，等10分
 def check_window(title,dialog):
-    print(title)
+    # print(title in gw.getAllTitles())
     dialog.destroy()
     if (title == ""):
+        # print(1)
         get_input()
-    elif (title in gw.getAllTitles()):
-        dialog.destroy()
-        time.sleep(5*60)
+    elif any(title in t for t in gw.getAllTitles()):
+        print(datetime.datetime.now(),title)
+        time.sleep(10*60)
+        get_input()
+    else:
+        # print(3)
         get_input()
     
 def get_input():
@@ -24,15 +29,20 @@ def get_input():
    
     dialog.geometry("200x100")
 
-    # create a label, a text field, and a button
+    # create a label, an input
     label = tk.Label(dialog, text="在做什么:")
     entry = tk.Entry(dialog)
-    button = tk.Button(dialog, text="OK", command=lambda:check_window(entry.get(),dialog))
+    
+    entry.bind("<Return>",  lambda event:check_window(entry.get(),dialog))
+    entry.after(60000,lambda :check_window(entry.get(),dialog))
+    # gain focus 
+    entry.focus_set()
+    dialog.state("zoomed")
         
     # add the label, the text field, and the button to the window
     label.pack()
     entry.pack()
-    button.pack()
+    
 
     # raise the window to the top of the stacking order and make it stay on top
     dialog.lift()
